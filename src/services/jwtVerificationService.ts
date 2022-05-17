@@ -1,0 +1,4 @@
+const authenticationHeader = () => {
+	
+}
+export {authenticationHeader}

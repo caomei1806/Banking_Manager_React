@@ -1,0 +1,250 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+$mainFont: "Roboto", sans-serif;
+$defaultGap: 30px;
+$wideGap: 7em;
+$box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+$default-transition: all 0.3s ease-in;
+
+//colorTheme
+$primary: rgb(25, 192, 120);
+$light: rgb(248, 248, 248);
+$secondary: rgb(201, 218, 208);
+$accent: rgb(255, 0, 157);
+$dark: rgb(29, 29, 29);
+body {
+	padding: 0;
+	margin: 0;
+	background-color: $light;
+	font-family: $mainFont;
+	color: $dark;
+}
+button,
+input {
+	border: 0;
+	padding: 1em 0;
+	font-size: 15px;
+	transition: $default-transition;
+
+	&:focus {
+		border: 0;
+		outline: none;
+	}
+}
+input,
+label {
+	text-indent: 1em;
+}
+label {
+	margin-bottom: 5px;
+	font-weight: bold;
+	order: -1;
+}
+input {
+	&:not([type="submit"]) {
+		&:focus,
+		&:hover {
+			box-shadow: $box-shadow !important;
+		}
+	}
+	&[type="submit"] {
+		cursor: pointer;
+	}
+}
+
+nav {
+	height: 64px;
+	width: 100%;
+	background-color: $primary;
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	.navLink {
+		all: unset;
+		height: 100%;
+		color: $light;
+		font-size: 20px;
+		font-weight: 500;
+		padding: 0 2em;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		transition: $default-transition;
+
+		&:last-of-type {
+			margin-right: calc($defaultGap * 2);
+		}
+		&:hover {
+			background-color: darken($primary, 10%);
+			color: white;
+		}
+	}
+}
+.form-subpage {
+	width: 100%;
+	height: calc(100vh - 64px);
+	display: flex;
+	flex-direction: row;
+}
+.userForm {
+	width: 40vw;
+	height: 100%;
+	background-color: $secondary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	.form-title {
+		position: absolute;
+		top: 44px;
+		right: calc(40vw - (40vw * 0.8));
+		z-index: 1;
+	}
+	.form-group {
+		padding: calc($defaultGap * 2) 0;
+		width: 80%;
+		height: calc(90% - ($defaultGap * 4));
+		background-color: $light;
+		box-shadow: $box-shadow;
+		display: flex;
+		flex-direction: column;
+		gap: $defaultGap;
+		position: relative;
+		.form-control {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			& > * {
+				width: 80%;
+			}
+			&:last-of-type {
+				margin-top: auto;
+				margin-bottom: $wideGap;
+			}
+			.btn-submit {
+				padding: 1.5em;
+				text-transform: uppercase;
+				font-size: 20px;
+				background-color: $accent;
+				color: white;
+				text-shadow: -1px 3px 2px rgb(187, 10, 116);
+				transition: $default-transition;
+				&:hover {
+					color: white;
+					background-color: darken($accent, 10%);
+				}
+				&:active {
+					background-color: darken($accent, 20%);
+				}
+			}
+		}
+	}
+}
+.slogan-content {
+	width: 60vw;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	column-gap: $defaultGap;
+	color: darken($light, 10%);
+	overflow: hidden;
+	background: $dark;
+	position: relative;
+
+	.background {
+		position: absolute;
+		left: 20%;
+		top: 0;
+		width: 120%;
+		height: 100%;
+		background: url("../public/img/280885344_742925033559453_1633988864643184498_n.png") $dark;
+		background-repeat: no-repeat;
+		background-position: right top;
+		background-size: 70%;
+		opacity: 12%;
+		transform: scaleX(-1);
+		clip-path: polygon(
+			80% 16%,
+			28% 71%,
+			68% 78%,
+			28% 28%,
+			72% 47%,
+			57% 12%,
+			26% 12%,
+			35% 25%,
+			39% 6%,
+			49% 22%,
+			23% 50%,
+			24% 35%,
+			33% 52%,
+			24% 71%,
+			14% 51%,
+			35% 57%,
+			50% 84%,
+			27% 86%,
+			72% 64%,
+			69% 16%,
+			84% 74%,
+			70% 60%,
+			60% 81%,
+			59% 50%,
+			88% 50%,
+			60% 94%,
+			38% 81%,
+			32% 99%,
+			34% 76%,
+			41% 94%
+		);
+		background-blend-mode: hard-light;
+	}
+	h1 {
+		text-align: center;
+		font-size: 50px;
+		font-weight: 400;
+		color: $secondary;
+	}
+	p {
+		padding: 0 $defaultGap;
+		width: 50%;
+		white-space: pre-line;
+		line-height: 2em;
+		font-size: 20px;
+		color: lighten($dark, 20%);
+		&::first-letter {
+			color: $accent;
+			float: left;
+			font-size: 4em;
+			line-height: 1em;
+			padding-right: 8px;
+		}
+	}
+	q {
+		padding: 0 $defaultGap;
+		margin-top: auto;
+		margin-bottom: calc(($wideGap - 32px) / 2);
+		text-align: right;
+		width: 40%;
+		white-space: pre-wrap;
+		font-size: 32px;
+		transform: matrix(0.95, 0, 0.05, 0.95, 0, 0);
+	}
+	img {
+		position: absolute;
+		right: $defaultGap;
+		bottom: -$defaultGap;
+		filter: hue-rotate(120deg) saturate(3);
+		height: 80%;
+		width: fit-content;
+	}
+	svg {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 10vw;
+		fill: #eaeaea;
+	}
+}
