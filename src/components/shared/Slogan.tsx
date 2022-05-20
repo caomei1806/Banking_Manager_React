@@ -4,10 +4,6 @@ type Props = {
 	slogan: SloganContent
 }
 const Slogan = (props: Props) => {
-	const showURL = () => {
-		console.log(`../../public/img/${props.slogan.imageURL}`)
-	}
-	showURL()
 	return (
 		<aside className='slogan-content'>
 			<svg viewBox='0 0 100 100' preserveAspectRatio='none'>
@@ -18,7 +14,7 @@ const Slogan = (props: Props) => {
 			<p>{props.slogan.description}</p>
 			{props.slogan.quote && <q>{props.slogan.quote}</q>}
 
-			{props.slogan.imageURL && <img src={`/img/fundsManagment.png`} />}
+			{props.slogan.imageURL && <img src={`/img/${props.slogan.imageURL}`} />}
 		</aside>
 	)
 }

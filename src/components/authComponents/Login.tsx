@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { login } from '../../services/authenticationServices'
 import { useCookies } from 'react-cookie'
 import User, { Role } from '../../types/User'
+import Message from '../../types/Message'
 import Slogan from '../shared/Slogan'
-import SloganContent from '../../types/SloganContent'
-
+import { validate } from '../../utils/validateForm'
 const defaultUser: User = {
 	id: 0,
 	name: '',
@@ -12,32 +12,46 @@ const defaultUser: User = {
 	password: '',
 	role: Role.user,
 }
-const defaultMessage = {
+const defaultMessage: Message = {
 	message: '',
-	loading: false,
+	statusCode: null,
 }
 const userFormSlogan = {
 	title: 'Banking Manager App',
 	description:
 		'Lorem ipsum dolor sit amet consectetur adipisicing elit. \nRepellendus eius explicabo perferendis distinctio voluptatem  suscipit quas sequi.\n Libero temporibus rerum delectus \ndistinctio quo, sapiente, incidunt earum labore \nsunt quaerat repellat quod praesentium. \nMaxime id provident similique? \nLaudantium qui ipsum blanditiis.',
-	imageURL: 'foundManagment.png',
+	imageURL: 'fundsManagment.png',
 	quote:
 		'Wealth is the ability to fully experience life. \t \n \t \t — Henry David Thoreau',
 }
 const Login = () => {
 	const [user, setUser] = useState(defaultUser)
-	const [message, setMessage] = useState(defaultMessage)
+	const [messages, setMessages] = useState([defaultMessage])
 	const [cookies] = useCookies(['access-token'])
 
-	const handleLogin = (e: React.FormEvent) => {
+	const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
+		setMessages([])
 		e.preventDefault()
-		const formValues = { ...e.target }
-		console.log(formValues)
+		const { email, password } = user
+		const cred = { email, password }
+		const credentials = Object.entries(cred)
+		const formMessages = [defaultMessage]
+		const form = e.currentTarget
+		const formElements = form.elements as typeof form.elements & {
+			email: { value: string }
+			password: { value: string }
+		}
 
-		setMessage({
-			message: '',
-			loading: true,
+		credentials.forEach((cred, index) => {
+			const key = cred[0]
+			const value = cred[1].toString()
+			const message = validate(key, value)
+			formMessages.push(message)
+			const el = formElements[index]
+			console.log(el)
 		})
+		setMessages(formMessages)
+
 		login(user.email, user.password)
 	}
 	return (
@@ -48,7 +62,7 @@ const Login = () => {
 					<div className='form-control'>
 						<label htmlFor='email'>Email</label>
 						<input
-							type='text'
+							type='email'
 							id='email'
 							name='email'
 							onChange={(e) => setUser({ ...user, email: e.target.value })}

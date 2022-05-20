@@ -131,6 +131,17 @@ nav {
 				color: white;
 				text-shadow: -1px 3px 2px rgb(187, 10, 116);
 				transition: $default-transition;
+				&[data-url="register"] {
+					background-color: $primary;
+					text-shadow: -1px 3px 2px $dark;
+					&:hover {
+						color: white;
+						background-color: darken($primary, 10%);
+					}
+					&:active {
+						background-color: darken($primary, 20%);
+					}
+				}
 				&:hover {
 					color: white;
 					background-color: darken($accent, 10%);

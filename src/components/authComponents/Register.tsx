@@ -1,12 +1,22 @@
 import React, { useState } from 'react'
 import User, { Role } from '../../types/User'
 import { register } from '../../services/authenticationServices'
+import Slogan from '../shared/Slogan'
+
 const defaultUser: User = {
 	id: 0,
 	name: '',
 	email: '',
 	password: '',
 	role: Role.user,
+}
+const userFormSlogan = {
+	title: 'Banking Manager App',
+	description:
+		'Lorem ipsum dolor sit amet consectetur adipisicing elit. \nRepellendus eius explicabo perferendis distinctio voluptatem  suscipit quas sequi.\n Libero temporibus rerum delectus \ndistinctio quo, sapiente, incidunt earum labore \nsunt quaerat repellat quod praesentium. \nMaxime id provident similique? \nLaudantium qui ipsum blanditiis.',
+	imageURL: 'moneySag.png',
+	quote:
+		'Wealth is the ability to fully experience life. \t \n \t \t — Henry David Thoreau',
 }
 const Register = () => {
 	const [user, setUser] = useState(defaultUser)
@@ -32,7 +42,7 @@ const Register = () => {
 					<div className='form-control'>
 						<label htmlFor='email'>Email</label>
 						<input
-							type='text'
+							type='email'
 							id='email'
 							name='email'
 							onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -48,10 +58,16 @@ const Register = () => {
 						/>
 					</div>
 					<div className='form-control'>
-						<input type='submit' value='sign up' className='btn-submit' />
+						<input
+							type='submit'
+							value='sign up'
+							className='btn-submit'
+							data-url='register'
+						/>
 					</div>
 				</div>
 			</form>
+			<Slogan slogan={userFormSlogan} />
 		</div>
 	)
 }
