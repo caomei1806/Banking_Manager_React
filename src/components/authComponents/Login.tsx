@@ -35,6 +35,17 @@ const Login = () => {
 		return elementError[0]
 	}
 
+	const displayError = (element: HTMLInputElement) => {
+		element.classList.add('error')
+		element.parentElement?.classList.add('error')
+	}
+	const addDataErrorAttribute = (
+		element: HTMLInputElement,
+		elementMessage: string
+	) => {
+		element.parentElement?.setAttribute('data-error', elementMessage)
+	}
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUser({ ...user, [e.target.name]: e.target.value })
 		e.target.classList.remove('error')
@@ -70,14 +81,14 @@ const Login = () => {
 				login(user.email, user.password)
 			} else {
 				errors.map((error) => {
-					error.DOMelement?.classList.add('error')
-					error.DOMelement?.parentElement?.classList.add('error')
 					const element = error.DOMelement as HTMLInputElement
+					displayError(element)
 					const elementMessage = getErrorMessage(element)
 					error.DOMelement?.parentElement?.setAttribute(
 						'data-error',
 						elementMessage ? elementMessage : ''
 					)
+					addDataErrorAttribute(element, elementMessage ? elementMessage : '')
 				})
 			}
 		} catch (error) {}
