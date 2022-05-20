@@ -9,7 +9,7 @@ const isValueEmpty = (value: String) => {
 const validate = (key: string,value: string) : Message => {
 	switch(key){
 		case 'email':
-			const emailRegex: RegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+			const emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			const valueEmpty = isValueEmpty(value)
 			const validate = emailRegex.test(value)
 			console.log(validate)

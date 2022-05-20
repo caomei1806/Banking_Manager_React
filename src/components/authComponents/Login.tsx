@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { login } from '../../services/authenticationServices'
 import { useCookies } from 'react-cookie'
 import User, { Role } from '../../types/User'
-import Message from '../../types/Message'
+import Error from '../../types/Error'
+import Message, { Status } from '../../types/Message'
 import Slogan from '../shared/Slogan'
 import { validate } from '../../utils/validateForm'
 const defaultUser: User = {
@@ -12,10 +13,14 @@ const defaultUser: User = {
 	password: '',
 	role: Role.user,
 }
-const defaultMessage: Message = {
-	message: '',
-	statusCode: null,
-}
+// const defaultMessage: Message = {
+// 	message: '',
+// 	statusCode: null,
+// }
+// const defaultError: Error = {
+// 	message: defaultMessage,
+// 	DOMelement: null,
+// }
 const userFormSlogan = {
 	title: 'Banking Manager App',
 	description:
@@ -26,16 +31,16 @@ const userFormSlogan = {
 }
 const Login = () => {
 	const [user, setUser] = useState(defaultUser)
-	const [messages, setMessages] = useState([defaultMessage])
+	const [errors, setErrors] = useState<Error[]>([])
 	const [cookies] = useCookies(['access-token'])
 
 	const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
-		setMessages([])
+		setErrors([])
 		e.preventDefault()
 		const { email, password } = user
 		const cred = { email, password }
 		const credentials = Object.entries(cred)
-		const formMessages = [defaultMessage]
+		const formErrors: Error[] = []
 		const form = e.currentTarget
 		const formElements = form.elements as typeof form.elements & {
 			email: { value: string }
@@ -46,12 +51,13 @@ const Login = () => {
 			const key = cred[0]
 			const value = cred[1].toString()
 			const message = validate(key, value)
-			formMessages.push(message)
-			const el = formElements[index]
-			console.log(el)
+			const inputElement = formElements[index] as HTMLInputElement
+			console.log(inputElement)
+			if (message.statusCode !== Status.success) {
+				formErrors.push({ message: message, DOMelement: inputElement })
+			}
 		})
-		setMessages(formMessages)
-
+		setErrors(formErrors)
 		login(user.email, user.password)
 	}
 	return (
