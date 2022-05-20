@@ -13,14 +13,6 @@ const defaultUser: User = {
 	password: '',
 	role: Role.user,
 }
-// const defaultMessage: Message = {
-// 	message: '',
-// 	statusCode: null,
-// }
-// const defaultError: Error = {
-// 	message: defaultMessage,
-// 	DOMelement: null,
-// }
 const userFormSlogan = {
 	title: 'Banking Manager App',
 	description:
@@ -30,9 +22,24 @@ const userFormSlogan = {
 		'Wealth is the ability to fully experience life. \t \n \t \t — Henry David Thoreau',
 }
 const Login = () => {
-	const [user, setUser] = useState(defaultUser)
+	const [user, setUser] = useState<User>(defaultUser)
 	const [errors, setErrors] = useState<Error[]>([])
 	const [cookies] = useCookies(['access-token'])
+
+	const getErrorMessage = (element: HTMLInputElement) => {
+		const elementError = errors.map((error) => {
+			if (error.DOMelement === element) {
+				return error.message.message.toString()
+			}
+		})
+		return elementError[0]
+	}
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setUser({ ...user, [e.target.name]: e.target.value })
+		e.target.classList.remove('error')
+		e.target.parentElement?.classList.remove('error')
+	}
 
 	const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
 		setErrors([])
@@ -58,7 +65,22 @@ const Login = () => {
 			}
 		})
 		setErrors(formErrors)
-		login(user.email, user.password)
+		try {
+			if (errors.length === 0) {
+				login(user.email, user.password)
+			} else {
+				errors.map((error) => {
+					error.DOMelement?.classList.add('error')
+					error.DOMelement?.parentElement?.classList.add('error')
+					const element = error.DOMelement as HTMLInputElement
+					const elementMessage = getErrorMessage(element)
+					error.DOMelement?.parentElement?.setAttribute(
+						'data-error',
+						elementMessage ? elementMessage : ''
+					)
+				})
+			}
+		} catch (error) {}
 	}
 	return (
 		<div className='form-subpage'>
@@ -71,7 +93,8 @@ const Login = () => {
 							type='email'
 							id='email'
 							name='email'
-							onChange={(e) => setUser({ ...user, email: e.target.value })}
+							className='input'
+							onChange={(e) => handleChange(e)}
 						/>
 					</div>
 					<div className='form-control'>
@@ -80,7 +103,8 @@ const Login = () => {
 							type='password'
 							id='password'
 							name='password'
-							onChange={(e) => setUser({ ...user, password: e.target.value })}
+							className='input'
+							onChange={(e) => handleChange(e)}
 						/>
 					</div>
 					<div className='form-control'>
