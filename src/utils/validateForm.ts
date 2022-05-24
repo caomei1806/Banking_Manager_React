@@ -1,4 +1,5 @@
-import Message, {Status} from '../types/Message'
+import {Message} from '../types'
+import {Status} from '../types/enums'
 
 const isValueEmpty = (value: String) => {
 	if(value === ""){

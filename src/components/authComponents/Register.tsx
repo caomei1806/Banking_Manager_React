@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import User, { Role } from '../../types/User'
+import { User } from '../../types'
+import { Role } from '../../types/enums'
 import { register } from '../../services/authenticationServices'
 import Slogan from '../shared/Slogan'
 

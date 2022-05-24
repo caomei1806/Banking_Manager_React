@@ -1,7 +1,4 @@
-export enum Role {
-	user,
-	admin
-}
+import {Role} from './enums/UserRole'
 type User = {
 	id: Number,
 	name: String,

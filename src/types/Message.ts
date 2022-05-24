@@ -1,9 +1,4 @@
-export enum Status {
-	emptyString = "emptyString",
-	invalid = "invalid",
-	success = "success",
-	badRequest = "badRequest"
-}
+import {Status} from './enums'
 type Message = {
 	message: String,
 	statusCode: Status | null

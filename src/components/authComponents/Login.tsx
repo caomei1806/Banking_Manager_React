@@ -1,18 +1,9 @@
-import React, { useState } from 'react'
-import { login } from '../../services/authenticationServices'
+import React from 'react'
 import { useCookies } from 'react-cookie'
-import User, { Role } from '../../types/User'
-import Error from '../../types/Error'
-import Message, { Status } from '../../types/Message'
+import { useGlobalContext } from '../../context'
+import useForm from '../../utils/hooks/useForm'
+import { FormType } from '../../types/enums'
 import Slogan from '../shared/Slogan'
-import { validate } from '../../utils/validateForm'
-const defaultUser: User = {
-	id: 0,
-	name: '',
-	email: '',
-	password: '',
-	role: Role.user,
-}
 const userFormSlogan = {
 	title: 'Banking Manager App',
 	description:
@@ -22,75 +13,13 @@ const userFormSlogan = {
 		'Wealth is the ability to fully experience life. \t \n \t \t — Henry David Thoreau',
 }
 const Login = () => {
-	const [user, setUser] = useState<User>(defaultUser)
-	const [errors, setErrors] = useState<Error[]>([])
+	const { user, setUser, errors, setErrors } = useGlobalContext()
 	const [cookies] = useCookies(['access-token'])
-
-	const getErrorMessage = (element: HTMLInputElement) => {
-		const elementError = errors.map((error) => {
-			if (error.DOMelement === element) {
-				return error.message.message.toString()
-			}
-		})
-		return elementError[0]
-	}
-
-	const displayError = (element: HTMLInputElement) => {
-		element.classList.add('error')
-		element.parentElement?.classList.add('error')
-	}
-	const addDataErrorAttribute = (
-		element: HTMLInputElement,
-		elementMessage: string
-	) => {
-		element.parentElement?.setAttribute('data-error', elementMessage)
-	}
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setUser({ ...user, [e.target.name]: e.target.value })
-		e.target.classList.remove('error')
-		e.target.parentElement?.classList.remove('error')
-	}
+	const { handleChange, handleSubmit } = useForm()
 
 	const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
-		setErrors([])
-		e.preventDefault()
-		const { email, password } = user
-		const cred = { email, password }
-		const credentials = Object.entries(cred)
-		const formErrors: Error[] = []
-		const form = e.currentTarget
-		const formElements = form.elements as typeof form.elements & {
-			email: { value: string }
-			password: { value: string }
-		}
-
-		credentials.forEach((cred, index) => {
-			const key = cred[0]
-			const value = cred[1].toString()
-			const message = validate(key, value)
-			const inputElement = formElements[index] as HTMLInputElement
-			console.log(inputElement)
-			if (message.statusCode !== Status.success) {
-				formErrors.push({ message: message, DOMelement: inputElement })
-			}
-		})
-		setErrors(formErrors)
 		try {
-			if (errors.length === 0) {
-				login(user.email, user.password)
-			} else {
-				errors.map((error) => {
-					const element = error.DOMelement as HTMLInputElement
-					displayError(element)
-					const elementMessage = getErrorMessage(element)
-					error.DOMelement?.parentElement?.setAttribute(
-						'data-error',
-						elementMessage ? elementMessage : ''
-					)
-					addDataErrorAttribute(element, elementMessage ? elementMessage : '')
-				})
-			}
+			handleSubmit(e, FormType.loginForm, user, setUser, errors, setErrors)
 		} catch (error) {}
 	}
 	return (
