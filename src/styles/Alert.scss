@@ -1,0 +1,55 @@
+@import "./globalStyles/variables.scss";
+
+.alert {
+	width: 90%;
+	position: absolute;
+	bottom: $defaultGap * 2;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	border: $dark;
+	background: $primary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.4s linear;
+
+	&-success {
+		background-color: $primary;
+	}
+	&-error {
+		background-color: $error;
+	}
+	&-info {
+		background-color: $info;
+	}
+	&-warning {
+		background-color: $warning;
+	}
+	figcaption {
+		flex-basis: 10%;
+		font-size: 24px;
+		text-align: center;
+		margin-top: 6px;
+		svg {
+			filter: invert(1);
+		}
+	}
+	p {
+		flex-basis: 80%;
+		font-size: 18px;
+		color: $light;
+	}
+	.button-close {
+		flex-basis: 10%;
+		height: 100%;
+		text-align: center;
+		cursor: pointer;
+		svg {
+			filter: invert(1);
+			font-size: 20px;
+		}
+	}
+}

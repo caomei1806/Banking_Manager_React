@@ -1,0 +1,81 @@
+@import "./globalStyles/variables.scss";
+.form-subpage {
+	width: 100%;
+	height: calc(100vh - 64px);
+	display: flex;
+	flex-direction: row;
+}
+.userForm {
+	width: 40vw;
+	height: 100%;
+	background-color: $secondary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	.form-title {
+		position: absolute;
+		top: 44px;
+		right: calc(40vw - (40vw * 0.8));
+		z-index: 1;
+	}
+	.form-group {
+		padding: calc($defaultGap * 2) 0;
+		width: 80%;
+		height: calc(90% - ($defaultGap * 4));
+		background-color: $light;
+		box-shadow: $box-shadow;
+		display: flex;
+		flex-direction: column;
+		gap: $defaultGap * 1.5;
+		position: relative;
+		.form-control {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			position: relative;
+			&.error::after {
+				content: attr(data-error);
+				position: absolute;
+				bottom: -$defaultGap / 1.5;
+				left: calc($defaultGap * 2);
+				font-size: 14px;
+				color: red;
+			}
+			& > * {
+				width: 80%;
+			}
+			&:last-of-type {
+				margin-top: auto;
+				margin-bottom: $wideGap;
+			}
+			.btn-submit {
+				padding: 1.5em;
+				text-transform: uppercase;
+				font-size: 20px;
+				background-color: $accent;
+				color: white;
+				text-shadow: -1px 3px 2px rgb(187, 10, 116);
+				transition: $default-transition;
+				&[data-url="register"] {
+					background-color: $primary;
+					text-shadow: -1px 3px 2px $dark;
+					&:hover {
+						color: white;
+						background-color: darken($primary, 10%);
+					}
+					&:active {
+						background-color: darken($primary, 20%);
+					}
+				}
+				&:hover {
+					color: white;
+					background-color: darken($accent, 10%);
+				}
+				&:active {
+					background-color: darken($accent, 20%);
+				}
+			}
+		}
+	}
+}

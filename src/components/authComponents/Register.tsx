@@ -3,6 +3,7 @@ import { User } from '../../types'
 import { Role } from '../../types/enums'
 import { register } from '../../services/authenticationServices'
 import Slogan from '../shared/Slogan'
+import '../../styles/Form.scss'
 
 const defaultUser: User = {
 	id: 0,

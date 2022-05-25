@@ -14,13 +14,19 @@ const register = async (user: User) => {
 }
 
 const login = async (email: String, password: String) => {
-	return await axios.post(
+	try{
+		return await axios.post(
 		`${API_URL}/login`,
 		{
 			email: email,
 			password: password
 		}
 	)
+	}
+	catch(e){
+		return e
+	}
+	
 }
 const logout = (user: User) => {
 	return axios.delete(

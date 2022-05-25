@@ -3,9 +3,17 @@ import { Error,User } from "../types"
 import {displayError, getErrorMessage, addDataErrorAttribute} from './displayErrors'
 import {login} from '../services/authenticationServices'
 import { validate } from "./validateForm"
+import { AxiosError } from "axios"
 
+const httpRequestError: Error = {
+	message: {
+		message: 'Invalid credentials',
+		statusCode: Status.badRequest
+	},
+	DOMelement: null
+}
 
-const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>, formType: FormType, user: User, setUser: (User: User) => void, errors: Error[] | null, setErrors: (Error: Error[]) =>  void) => {
+const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>, formType: FormType, user: User, setUser: (User: User) => void, errors: Error[] | null, setErrors: (Error: Error[]) =>  void) => {
 
 		setErrors([])
 		e.preventDefault()
@@ -33,7 +41,11 @@ const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>, formType: FormTy
 
 			if (formErrors.length === 0) {
 				console.log(errors)
-				login(user.email, user.password)
+				const a = await login(user.email, user.password)
+				if(a instanceof AxiosError ){
+					console.log("error occured")
+					return httpRequestError;
+				}
 			} else {
 				formErrors.forEach((error) => {
 					const element = error.DOMelement as HTMLInputElement

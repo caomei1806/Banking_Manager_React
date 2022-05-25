@@ -1,5 +1,6 @@
 import React from 'react'
 import SloganContent from '../../types/SloganContent'
+import '../../styles/Slogan.scss'
 type Props = {
 	slogan: SloganContent
 }

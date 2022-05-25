@@ -1,0 +1,31 @@
+@import "./globalStyles/variables.scss";
+nav {
+	height: 64px;
+	width: 100%;
+	background-color: $primary;
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	.navLink {
+		all: unset;
+		height: 100%;
+		color: $light;
+		font-size: 20px;
+		font-weight: 500;
+		padding: 0 2em;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		transition: $default-transition;
+
+		&:last-of-type {
+			margin-right: calc($defaultGap * 2);
+		}
+		&:hover {
+			background-color: darken($primary, 10%);
+			color: white;
+		}
+	}
+}
