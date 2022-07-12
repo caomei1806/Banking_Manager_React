@@ -5,6 +5,13 @@ import {login} from '../services/authenticationServices'
 import { validate } from "./validateForm"
 import { AxiosError } from "axios"
 
+type SubmitProps =  {
+	formType: FormType,
+	user: User,
+	setUser?: (User: User) => void,
+	errors: Error[] | null,
+	setErrors?: (Error: Error[]) =>  void
+}
 const httpRequestError: Error = {
 	message: {
 		message: 'Invalid credentials',
@@ -13,20 +20,29 @@ const httpRequestError: Error = {
 	DOMelement: null
 }
 
-const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>, formType: FormType, user: User, setUser: (User: User) => void, errors: Error[] | null, setErrors: (Error: Error[]) =>  void) => {
-
+const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>, submitProps: SubmitProps) => {
+		const {formType, user, setUser, errors, setErrors} = submitProps
+		if(setErrors)
 		setErrors([])
 		e.preventDefault()
-			const { email, password } = user
-			const cred = { email, password }
-			const credentials = Object.entries(cred)
+		const { email, password } = user
+		const cred = {email, password}
+		switch(formType){
+			case FormType.loginForm:
+				
+				break;
+			default:
+				break;
+				
+		}
+			
+		const credentials = Object.entries(cred)
 		const formErrors: Error[] = []
 		const form = e.currentTarget
 		const formElements = form.elements as typeof form.elements & {
 			email: { value: string }
 			password: { value: string }
 		}
-
 		credentials.forEach((cred, index) => {
 			const key = cred[0]
 			const value = cred[1].toString()
@@ -37,6 +53,7 @@ const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>, formType: 
 				formErrors.push({ message: message, DOMelement: inputElement })
 			}
 		})
+		if(setErrors)
 		setErrors(formErrors)
 
 			if (formErrors.length === 0) {

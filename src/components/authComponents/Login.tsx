@@ -1,11 +1,12 @@
 import React, { useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { useGlobalContext } from '../../context'
-import useForm from '../../utils/hooks/useForm'
+import { useForm } from '../../utils/hooks/useForm'
+import { generateAlert } from '../../utils/generateAlert'
 import { FormType, Status, AlertType, Role } from '../../types/enums'
 import Slogan from '../shared/Slogan'
 import AlertBox from '../shared/AlertBox'
-import { Alert } from '../../types'
 import '../../styles/Form.scss'
 
 const userFormSlogan = {
@@ -21,6 +22,7 @@ const Login = () => {
 	const [cookies] = useCookies(['access-token'])
 	const { handleChange, handleSubmit } = useForm()
 	const alertRef = useRef<HTMLDivElement>(null)
+	const navigate = useNavigate()
 	useEffect(() => {
 		if (errors) {
 			if (errors.length > 0) {
@@ -29,41 +31,21 @@ const Login = () => {
 		}
 	}, [errors])
 	const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-		const httpResult = await handleSubmit(
-			e,
-			FormType.loginForm,
+		const formType = FormType.loginForm
+		const httpResult = await handleSubmit(e, {
+			formType,
 			user,
 			setUser,
 			errors,
-			setErrors
-		)
-
+			setErrors,
+		})
+		alertRef.current?.classList.remove('hide')
 		if (httpResult?.message.statusCode === Status.badRequest) {
 			setErrors([httpResult])
 
 			setUser({ id: 0, name: '', email: '', password: '', role: Role.user })
-		}
-	}
-	const generateAlert = (): Alert => {
-		const errorsCount = errors?.length ? errors.length : 0
-		if (errorsCount > 0) {
-			const alert: Alert = {
-				message: {
-					message: 'Please provide valid credentials',
-					statusCode: Status.invalid,
-				},
-				alertType: AlertType.error,
-			}
-			return alert
 		} else {
-			const alert: Alert = {
-				message: {
-					message: 'Success!',
-					statusCode: Status.success,
-				},
-				alertType: AlertType.success,
-			}
-			return alert
+			navigate('/account-holder/account-setup')
 		}
 	}
 	return (
@@ -79,7 +61,7 @@ const Login = () => {
 							name='email'
 							className='input'
 							value={user.email.toString()}
-							onChange={(e) => handleChange(e)}
+							onChange={(e) => handleChange(e, FormType.loginForm)}
 						/>
 					</div>
 					<div className='form-control'>
@@ -90,13 +72,13 @@ const Login = () => {
 							name='password'
 							className='input'
 							value={user.password.toString()}
-							onChange={(e) => handleChange(e)}
+							onChange={(e) => handleChange(e, FormType.loginForm)}
 						/>
 					</div>
 					<div className='form-control'>
 						<input type='submit' value='sign in' className='btn-submit' />
 					</div>
-					<AlertBox alertContent={generateAlert()} ref={alertRef} />
+					<AlertBox alertContent={generateAlert(errors)} ref={alertRef} />
 				</div>
 			</form>
 			<Slogan slogan={userFormSlogan} />
