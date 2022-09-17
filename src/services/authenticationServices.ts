@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {User} from '../types'
-const API_URL = 'https://kg-banking-manager.herokuapp.com/api/v1/auth'
+const API_URL = 'http://localhost:5000/api/v1/auth'
 
 const register = async (user: User) => {
 	return await axios.post(
@@ -20,7 +20,7 @@ const login = async (email: String, password: String) => {
 		{
 			email: email,
 			password: password
-		}
+		}, { withCredentials: true }
 	)
 	}
 	catch(e){

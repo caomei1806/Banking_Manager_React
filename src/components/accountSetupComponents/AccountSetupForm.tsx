@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AlertBox from '../shared/AlertBox'
 import '../../styles/Form.scss'
 import { useForm } from '../../utils/hooks/useForm'
 import { generateAlert } from '../../utils/generateAlert'
 import { FormType, Status, AlertType } from '../../types/enums'
-import { Address, Alert, Fullname } from '../../types'
+import { AccountHolder, Address, Alert, Fullname } from '../../types'
 import { useGlobalContext } from '../../context'
+import { Navigate, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const AccountSetupForm = () => {
 	const { user, errors, setErrors } = useGlobalContext()
@@ -17,20 +19,29 @@ const AccountSetupForm = () => {
 		street: '',
 		city: '',
 	})
+	const [personalIDNo, setPersonalIDNo] = useState<String>('')
+	const navigate = useNavigate()
 
 	const handleSave = async (e: React.SyntheticEvent<HTMLFormElement>) => {
 		const formType = FormType.accountSetupForm
+		console.log(document.cookie)
+		const accountHolder: AccountHolder = {
+			fullname: `${fullname.name} ${fullname.surname}`,
+			personalIDNo: personalIDNo,
+			address,
+		}
 		const httpResult = await handleSubmit(e, {
 			formType,
 			user,
 			errors,
 			setErrors,
+			accountHolder,
 		})
 		alertRef.current?.classList.remove('hide')
 		if (httpResult?.message.statusCode === Status.badRequest) {
 			setErrors([httpResult])
 		} else {
-			// navigate('/account-holder/account-setup')
+			navigate('/account-holder/create-bank-account')
 		}
 	}
 	return (
@@ -59,7 +70,7 @@ const AccountSetupForm = () => {
 								name='surname'
 								className='input'
 								onChange={(e) =>
-									setFullname({ ...fullname, name: e.target.value })
+									setFullname({ ...fullname, surname: e.target.value })
 								}
 							/>
 						</div>
@@ -71,7 +82,10 @@ const AccountSetupForm = () => {
 							id='personalIDNo'
 							name='personalIDNo'
 							className='input'
-							onChange={(e) => handleChange(e, FormType.accountSetupForm)}
+							onChange={(e) => {
+								handleChange(e, FormType.accountSetupForm)
+								setPersonalIDNo(e.target.value)
+							}}
 						/>
 					</div>
 					<div className='form-control children-flex-row'>

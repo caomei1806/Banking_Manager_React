@@ -1,5 +1,7 @@
 export enum FormType  {
 	loginForm = "loginForm",
 	registerForm = "registerForm",
-	accountSetupForm="accountSetupForm"
+	accountSetupForm="accountSetupForm",
+	createAccountForm="createAccountForm",
+	tranferForm="transferForm"
 }

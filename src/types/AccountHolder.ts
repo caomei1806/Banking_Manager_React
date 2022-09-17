@@ -3,7 +3,7 @@ type AccountHolder = {
 	fullname: String,
 	personalIDNo: String,
 	address: Address,
-	user: User
+	user?: User
 }
 
 export default AccountHolder;
